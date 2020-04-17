@@ -108,3 +108,5 @@ programa_mongodb_caminhao.py
 --programa Python
 programa_mongodb_rota_caminhao_motorista.py
 
+3) ID motorista, name, ssn, sendo q eventos diferentes de Normal
+

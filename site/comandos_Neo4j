@@ -1,0 +1,16 @@
+--comandos Neo4j
+
+--Craindo Nós
+
+CREATE(dylan:Musico {nome : "Bob Dylan", data_de_nascimento : '1941-05-24'})
+
+CREATE(hendrix:Musico {nome : "Jimmy Hendrix"})
+
+CREATE(al_along:Musica{ nome : "All Along the Watchtower"})
+
+--Criando Arestas
+MATCH(hendrix:Musico{nome : "Jimmy Hendrix"}),(al_along:Musica {"All Along the Watchtower"})
+
+MATCH (hendrix:Musico{nome : "Jimmy Hendrix"}),(al_along:Musica {nome : "All Along the Watchtower"})
+CREATE(hendrix)-[r:GRAVOU]->(al_along)
+

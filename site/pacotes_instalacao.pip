@@ -1,0 +1,33 @@
+--instalaçoes
+pip install pymongo
+
+pip install neo4j-driver
+
+pip install neo4jrestclient
+
+pip install PyPi
+
+pip install numpy
+
+pip3 install pandas
+
+pip install scikit-learn
+
+--Run in command prompt.
+
+pip list
+
+--Check what version you have installed on your system if you have an old version.
+--Try to uninstall the package...
+
+pip uninstall neo4j-driver
+
+pip uninstall neo4jrestclient 
+
+--Try after to install it:
+
+pip install requests
+
+--You can also test if pip does not do the job.
+
+easy_install requests

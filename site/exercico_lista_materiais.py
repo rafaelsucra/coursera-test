@@ -51,3 +51,15 @@ for i in range(2,4):
 	print("Tabuada do "+ str(i))
 	for j in range(0,11):
 		print(str (j) + " "+ str(j * i))
+
+for i in range(1,10):
+	print("Tabuada do "+ str(i))
+	for j in range(0,11):
+		print(str (j) + " "+ str(j * i))
+
+arquivo=open('pessoas.txt','r')
+for linha in arquivo:
+	lista = linha.split()
+	print(lista)
+
+arquivo.close()		
