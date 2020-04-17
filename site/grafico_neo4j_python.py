@@ -3,7 +3,7 @@ from neo4jrestclient.client import GraphDatabase
 
 #db = GraphDatabase("http://localhost:7474")
 
-db = GraphDatabase("http://localhost:11008/", username=None, password=None, cert_file=None, key_file=None)
+db = GraphDatabase("http://localhost:7474", username="neo4j", password="sucra")
 
 #, username="neo4j", password="sucra")
 #db = GraphDatabase("http://127.0.0.1:7474/db/data/") #, username="neo4j", password="SUCRA")
