@@ -5,6 +5,10 @@ pip install neo4j-driver
 
 pip install neo4jrestclient
 
+pip install py2neo
+--bibblioteca
+--https://py2neo.org/v4/database.html#the-database
+
 pip install PyPi
 
 pip install numpy
@@ -31,3 +35,6 @@ pip install requests
 --You can also test if pip does not do the job.
 
 easy_install requests
+
+--Anaconda3 with Jupiter, local de arquivos .ipynb
+C:\ProgramData\Anaconda3\Lib\site-packages

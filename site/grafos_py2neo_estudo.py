@@ -1,6 +1,6 @@
 from py2neo import Graph , Node, Relationship
 
-bd = Graph("localhost", auth=('neo4j','sucra'))
+bd = Graph("http://localhost:11008", auth=('neo4j','sucra'))
 
 op = bd.begin()
 
@@ -21,9 +21,13 @@ op.create(u5)
 op.create(u6)
 op.create(u7)
 
+q = Graph.run(query).data()
+
 #for i in range(1,7):
 #    text = "u"+str(i)
-#    op.create(text)
+    #print(text)
+    #op.merge(text)
+#    op.create(i)
 
 #criando o relacionamento
 r1 = Relationship(u1,"follows",u2)
