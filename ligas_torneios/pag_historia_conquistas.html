@@ -4,8 +4,25 @@
 	<meta charset="utf-8">
     <title>Liga de Futmesa - Toscannanbol</title>
     <link href="centralizar.css" rel="stylesheet" type="text/css"/>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+        }
+        .vaiocorrer{
+            background-color: greenyellow;
+        }
+        .cancelado{
+            background-color: red;
+        }
+        .ocorreu{
+            background-color: goldenrod;
+        }
+    </style>
 </head>
-<body>
+<body background="fundo.jpg" bgproperties="fixed">
 	<h1 id="top">Área de Historias, Torneios, Escalações, Ranking e Conquistas</h1>
 	<section>
         <ul>
@@ -13,8 +30,8 @@
             <li><a href="#section1">Como tudo começou</a></li>
             <li><a href="#section2">Calendário dos Torneios</a></li>
             <li><a href="#section3">Escalações</a></li>
-            <li><a href="#section4">Ranking</a></li>
-            <li><a href="#section5">Conquistas</a></li>
+            <li><a href="#section4">Ranking e Estatisticas</a></li>
+            <li><a href="#section5">Área do Torneio</a></li>
             <li><a href="#section6">Área de Negociações</a></li>
             <li><a href="#section7">Como Encontrar a Liga nas Redes Sociais</a></li>
         </ul>
@@ -30,41 +47,203 @@
     <section id="section2">
         <h3>Calendário dos Torneios:</h3>
         <div>
-            <h1>Datas e nomes dos Torneios: Liga 2020</h1>
+            <!--<h1>Datas e nomes dos Torneios: Liga 2020</h1>-->
             <hr>
-            <p>25 de Janeiro - Campeonato Pipa do Joaquim</p>
-            <p>15 de Fevereiro - Taça Carlos Mineiro da Silva</p>
-            <p>14 de Março - Torneio Aleluia</p>
-            <p>04 de Abril - Campeonato Sr.Sergio</p>
-            <p>23 de Maio - Torneio Maracanã</p>
-            <p>20 de Junho - Campeonato Paulo Emílio</p>
-            <p>18 de Julho - Taça do Beto</p>
-            <p>15 de Agosto - Copa Toscana</p>
-            <p>12 de Setembro - Gran Prix Cirineu</p>
-            <p>17 de Outubro - Aberto Tijolinho</p>
-            <p>28 de Novembro - Torneio dos Campeões</p>
+            <table style="margin: auto;">
+                <thead>
+                    <tr>
+                        <td>Dia</td>
+                        <td>Mês</td>
+                        <td>Nome Torneio</td>
+                        <td>Ocorrência</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>25</td>
+                        <td>Janeiro</td>
+                        <td>Campeonato Pipa do Joaquim</td>
+                        <td style="background-color:goldenrod;">Sim</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Fevereiro</td>
+                        <td>Taça Carlos Mineiro da Silva</td>
+                        <td style="background-color:goldenrod;">Sim</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Março</td>
+                        <td>Torneio Aleluia</td>
+                        <td style="background-color:goldenrod;">Sim</td>
+                    </tr>
+                    <tr>
+                        <td>04</td>
+                        <td>Abril</td>
+                        <td>Campeonato Sr.Sergio</td>
+                        <td style="background-color:red;">Suspenso</td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td>Maio</td>
+                        <td>Torneio Maracanã</td>
+                        <td style="background-color:red;">Suspenso</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>Junho</td>
+                        <td>Campeonato Paulo Emílio</td>
+                        <td style="background-color:greenyellow;">Não</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Julho</td>
+                        <td>Taça do Beto</td>
+                        <td style="background-color:greenyellow;">Não</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Agosto</td>
+                        <td>Copa Toscana</td>
+                        <td style="background-color:greenyellow;">Não</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Setembro</td>
+                        <td>Gran Prix Cirineu</td>
+                        <td style="background-color:greenyellow;">Não</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>Outubro</td>
+                        <td>Aberto Tijolinho</td>
+                        <td style="background-color:greenyellow;">Não</td>
+                    </tr>
+                    <tr>
+                        <td>28</td>
+                        <td>Novembro</td>
+                        <td>Torneio dos Campeões</td>
+                        <td style="background-color:greenyellow;">Não</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Dezembro</td>
+                        <td>Nova Geração</td>
+                        <td style="background-color:greenyellow;">Não</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+            Página de Histórico de Torneios:
+            <a href="historico_torneio.html" title="Historico de Torneio">clique aqui</a>
         </div>
     </section>
     <section id="section3">
-        <h3>(#section3) Section 3</h3>
-        <p>Section 3 - </p>
+        <h3>Escale seu Time</h3>
+        <p style="font-size: 23px;">Área destinada para escalar seu time:</p>
+        <div class="box-parent-login">
+            <div class="well bg-white box-login">
+                <h1 class="ls-login-logo">LOGIN</h1>
+                <form role="form">
+                    <fieldset>
+                        <div style="text-align: center;" class="form-group ls-login-user">
+                            <label for="userLogin">Usuário</label>
+                            <input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário">
+                        </div>
+                        <div style="text-align: center;" class="form-group ls-login-password">
+                            <label for="userPassword">Senha</label>
+                            <input class="form-control ls-login-bg-password input-lg" id="userPassword" type="password" aria-label="Senha" placeholder="Senha">
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="#" class="ls-login-forgot">Esqueci minha senha</a>
+                            <input type="submit" value="Entrar" class="btn btn-primary btn-lg btn-block">
+                            <p class="txt-center ls-login-signup">Não possui um usuário na Liga?
+                                <!--<a href="#">Solicite o Cadastro agora</a>-->
+                                <a href="https://www.instagram.com/explore/tags/toscanannbol/">Siga-nos no Instagram</a>
+                            </p>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
     </section>
     <section id="section4">
-        <h3>(#section4) Section 4</h3>
-        <p>Section 4 - </p>
+        <h3>Ranking e Estatisticas</h3>
+        <p style="font-size: 23px;">Rank da Liga e Estatisticas</p>
+        <div class="box-parent-login">
+            <div class="well bg-white box-login">
+                <h1 class="ls-login-logo">LOGIN</h1>
+                <form role="form">
+                    <fieldset>
+                        <div style="text-align: center;" class="form-group ls-login-user">
+                            <label for="userLogin">Usuário</label>
+                            <input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário">
+                        </div>
+                        <div style="text-align: center;" class="form-group ls-login-password">
+                            <label for="userPassword">Senha</label>
+                            <input class="form-control ls-login-bg-password input-lg" id="userPassword" type="password" aria-label="Senha" placeholder="Senha">
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="#" class="ls-login-forgot">Esqueci minha senha</a>
+                            <input type="submit" value="Entrar" class="btn btn-primary btn-lg btn-block">
+                            <p class="txt-center ls-login-signup">Não possui um usuário na Liga?
+                                <!--<a href="#">Solicite o Cadastro agora</a>-->
+                                <a href="https://www.instagram.com/explore/tags/toscanannbol/">Siga-nos no Instagram</a>
+                            </p>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
     </section>
     <section id="section5">
-        <h3>(#section5) Section 5</h3>
-        <p>Section 5 - </p>
+        <h3>Área do Torneio</h3>
+        <p style="font-size: 23px;">Área destinada ao Torneio:</p>
+        <p style="font-size: 14px;">- Estilo de Torneio</p>
+        <p style="font-size: 14px;">- Sorteio</p>
+        <p style="font-size: 14px;">- Liberação de Grupos</p>
+        <p style="font-size: 14px;">- Marcação de Artilharia e Resultados</p>
+        <p style="font-size: 14px;">- Acompanhar Torneio</p>
+        <div class="box-parent-login">
+            <div class="well bg-white box-login">
+                <h1 class="ls-login-logo">LOGIN</h1>
+                <form role="form">
+                    <fieldset>
+                        <div style="text-align: center;" class="form-group ls-login-user">
+                            <label for="userLogin">Usuário</label>
+                            <input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário">
+                        </div>
+                        <div style="text-align: center;" class="form-group ls-login-password">
+                            <label for="userPassword">Senha</label>
+                            <input class="form-control ls-login-bg-password input-lg" id="userPassword" type="password" aria-label="Senha" placeholder="Senha">
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="#" class="ls-login-forgot">Esqueci minha senha</a>
+                            <input type="submit" value="Entrar" class="btn btn-primary btn-lg btn-block">
+                            <p class="txt-center ls-login-signup">Não possui um usuário na Liga?
+                                <!--<a href="#">Solicite o Cadastro agora</a>-->
+                                <a href="https://www.instagram.com/explore/tags/toscanannbol/">Siga-nos no Instagram</a>
+                            </p>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
     </section>
     <section id="section6">
         <h3>(#section6) Section 6</h3>
         <p>Section 6 - </p>
     </section>
     <div>
-        <h2><a name="section7">(#section7) Section 7</a></h2>
+        <h2><a name="section7">Redes Sociais</a></h2>
+        <a href="https://www.instagram.com/explore/tags/toscanannbol/" 
+        target="_blank" title="Toscannanbol no Instagram">Instagram da Liga - Curta e siga</a>
+        </p>
+        <!-- SnapWidget -->
+<iframe src="https://snapwidget.com/embed/825666" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden;  width:1395px; height:310px"></iframe>
+        <hr>
         <p>
-            Back to top: <a href="#top">Back to Top</a>
+            Voltar ao Início: <a href="#top">inicio</a>
         </p>
     </div>
 </body>
