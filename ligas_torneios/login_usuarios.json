@@ -1,0 +1,15 @@
+{
+    "nomeusuario" : "rafaelsucra",
+    "pass" : "sucra",
+    "perfil" : "S"
+},
+{
+    "nomeusuario" : "teste",
+    "pass" : "t1",
+    "perfil" : "N"
+},
+{
+    "nomeusuario" : "t",
+    "pass" : "t",
+    "perfil" : "N"
+};
