@@ -1,5 +1,29 @@
 show dbs
 
+// comando de criacao de usuário
+use admin
+
+// comando de criacao de usuario
+db.createUser(
+    {
+    user: "admin",
+    pwd: "admin",
+    roles: [ "userAdminAnyDatabase",
+             "dbAdminAnyDatabase",
+             "readWriteAnyDatabase"]
+    }
+   )
+
+// apos criar o ambiente:
+use admin
+
+db.auth("admin", "admin" )
+
+mongo admin -u admin -p admin
+// colocar auth=banco admin -u=usuario e -p=password
+mongoimport --authenticationDatabase=admin -u admin -p admin -d COVID19 -c localidade --type csv --file c:\Temp\Sedes_Coordenadas_Municipios.csv --headerline
+
+
 use AULA
 
 db.albuns.insert({})

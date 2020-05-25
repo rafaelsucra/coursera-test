@@ -2,7 +2,7 @@ import pymongo
 
 cliente = pymongo.MongoClient("localhost",27017)
 
-bd = client.AULA
+bd = cliente.AULA
 
 album1 = bd.albuns.find_one({"nome":"Somewhere Far Beyond"})
 
