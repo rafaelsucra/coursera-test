@@ -2,7 +2,8 @@
 
 # comando no MongoDb para carregar a base do governo
 
-# mongoimport -d COVID19 -c covid19_brasil --type csv --file c:\Temp\covid19.csv --headerline
+# mongoimport --authenticationDatabase=admin -u admin -p admin -d COVID19 -c covid19_brasil --type csv --file c:\Temp\covid19.csv --headerline
+# mongoimport --authenticationDatabase=admin -u admin -p admin -d COVID19 -c localidade --type csv --file c:\Temp\RELATORIO_DTB_BRASIL_MUNICIPIO_tratada_LONG_LAT_FINAL.csv --headerline
 
 import pymongo as pm
 from datetime import datetime
@@ -62,7 +63,7 @@ v_CONT = 0
 
 ## criação de uma nova collection
 
-"""nova_col = db["covid19_localidade"]
+nova_col = db["covid19_localidade"]
 col_list = db.list_collection_names()
 print(col_list)
 
@@ -106,7 +107,7 @@ for v_CURSOR in v_RECEPCIONA_2:
 
 print(str(v_CONT))
 
-"""
+
 
 v_EXTRACAO = db.covid19_localidade.find()
 
