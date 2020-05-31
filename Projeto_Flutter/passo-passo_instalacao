@@ -1,0 +1,32 @@
+Download:
+- Flutter
+- Android Studio
+
+--Criar pasta: C:\src\flutter
+--Colocar caminho como variavel de ambiente: C:\src\flutter\bin\
+
+Instalar seguintes Plug-in no Android studio: Dart e flutter
+
+VS Code, instalar os seguintes plug-in: dart, Flutter e Flutter Widget Snippets
+
+-- comando de criação do projeto flutter:
+
+C:\src\flutter\bin\flutter create primeiro_projeto
+
+ou
+
+& C:\src\flutter\bin\flutter create primeiro_projeto
+
+--visualiza as configurações: 
+flutter doctor
+
+
+--comando para verificar dispositivos conectados:
+& C:\src\flutter\bin\flutter devices
+
+--chamando um dispositivo:
+& C:\src\flutter\bin\flutter run -d <identificador>
+ou
+& C:\src\flutter\bin\flutter run -d all
+
+
