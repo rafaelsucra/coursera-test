@@ -99,6 +99,58 @@ db.albuns.find({"artista": {"nome":"Blind Guardian"}})
 
 db.albuns.find({"duracao":{"$range":[0,9999]}})
 
+--trabalhando com agregação:
+db.covid19_estado_AC.aggregate([
+    {
+      $group: {
+        _id: "$date",
+        last_available_confirmed : {$sum : "$last_available_confirmed" }
+      }
+    }
+  ])
+
+--Exibindo e ocultando colunas: $project
+db.clientes.aggregate([{$match: {avaliacao: 10}}, {$project: {_id: 0, nome: 1, categoria: 1, avaliacao: 1}}, {$limit: 10}])
+
+--trabalhando com lookup:
+db.covid19_geral_municipio.aggregate([
+    {
+      $lookup: {
+          from : "covid19_estado",
+          localField : ("state","date"),
+          foreignField : ("state","date"),
+          as : "municipi0_estado" 
+          }
+    }
+  ])
+
+--criando uma nova collection:
+db.clientes.aggregate([
+    {
+        $project: {_id: 0, nome: 1, categoria: 1, avaliacao: 1}
+    }, 
+    {
+        $sort: {categoria: -1, avaliacao: 1}
+    }, 
+    {
+        $out: "clientes_atualizado"
+    }
+])
+
+db.covid19_geral_municipio.aggregate([
+  {
+    $lookup: {
+        from : "covid19_estado",
+        localField : ("state","date"),
+        foreignField : ("state","date"),
+        as : "municipio_estado" 
+        }
+  },
+  {
+        $out: "covid19_mun_est"
+  }
+])
+
 --pacote de instalacao do Python no MongoDB
 pip install pymongo
 
