@@ -1,0 +1,77 @@
+download: 
+- Sublime Text 3
+- Git
+- NodeJS
+- BrowserSync
+
+Site Importante: 
+- git book
+
+Sites para ajudar no DSV:
+- jsfiddle.net
+- https://codepen.io/
+- css-tricks.com
+
+Site de Validação:
+- W3C validator
+
+
+========================================
+Criação do ambiente:
+
+
+comandos comand:
+
+git clone <colocar link de clone>
+
+cd <repositorio>
+
+git status
+
+mkdir <pasta do site>
+
+cd <pasta do site>
+
+Após salvar a index.html:
+- git status
+- git add .
+- git commit -m "Meu Primeiro Site"
+- git status
+- git push
+
+Após alterar a pagina:
+- git status
+- git add index.html ou site\index.html
+- git commit -m "Alteracao feita"
+- git status
+- git push
+=================================================================
+--SSL certificate problem: Unable to get local issuer certificate
+=================================================================
+link: https://confluence.atlassian.com/bitbucketserverkb/ssl-certificate-problem-unable-to-get-local-issuer-certificate-816521128.html
+
+Workaround
+Tell git to not perform the validation of the certificate using the global option:
+- git config --global http.sslVerify false
+
+Resolution 
+There are several ways this issue has been resolved previously. Below we suggest a possible resolution that should be run on the client side:
+A. Ensure the root cert is added to git.exe's certificate store.
+B. Tell Git where to find the CA bundle by running:
+
+- git config --system http.sslCAPath /absolute/path/to/git/certificates
+
+or copying the CA bundle to the /bin directory and adding the following to the gitconfig file:
+
+- sslCAinfo = /bin/curl-ca-bundle.crt
+
+=========================================
+Criar no Sublime text:
+- salvar "index.html" no diretorio do site
+- digitar html e pressionar Crtl+Space
+
+=========================================
+Após ter criado a pagina e feito o push para GitHub:
+Subir para o browser-sync:
+
+- browser-sync start --server --directory --files "*"
