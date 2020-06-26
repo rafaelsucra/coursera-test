@@ -4,6 +4,10 @@
 
 # mongoimport --authenticationDatabase=admin -u admin -p admin -d COVID19 -c covid19_brasil --type csv --file c:\Temp\covid19.csv --headerline
 # mongoimport --authenticationDatabase=admin -u admin -p admin -d COVID19 -c localidade --type csv --file c:\Temp\RELATORIO_DTB_BRASIL_MUNICIPIO_tratada_LONG_LAT_FINAL.csv --headerline
+# mongoimport --db=users --collection=contacts --file=contacts.json
+# mongoimport --authenticationDatabase=admin -u admin -p admin -d YOUTUBE -c youtube_kind --type json --file C:\Users\rolivei5\coursera-test\PowerBI\BaseYoutube\datasets_4549_466349_US_category_id.json
+
+
 import operator as op
 
 import pymongo as pm
