@@ -7,9 +7,8 @@
 # mongoimport --db=users --collection=contacts --file=contacts.json
 # mongoimport --authenticationDatabase=admin -u admin -p admin -d YOUTUBE -c youtube_kind --type json --file C:\Users\rolivei5\coursera-test\PowerBI\BaseYoutube\datasets_4549_466349_US_category_id.json
 
-
+import subprocess as sp
 import operator as op
-
 import pymongo as pm
 from datetime import datetime
 
@@ -20,6 +19,20 @@ db = cliente.COVID19
 # Chamada do estado
 v_ESTADO = input("Digite o estado para ver a quantidade confirmada: ")
 v_DATA_FIM = input("DATA NO FORMATO = YYYY-MM-DD: EX:.2020-04-02: ")
+
+# drop collection principal
+print("Inicio do drop da Collection principal")
+db.covid19_brasil.drop()
+print("Fim do drop da Collection principal")
+# chamada de criacao e import dados:
+print("Inicio da execucao do arquivo bat")
+
+program = r'"C:\Temp\Execucao_mongoimport_covid19.bat"'
+saida = sp.Popen(program)
+
+print("Fim da execucao do arquivo BAT")
+
+v_DATA_LIBERA = input("Libera analise de Dados S-(Sim)/N-(Não):")
 
 ## v_DATA_MAXIMA = db_uf.covid19_brasil.find({$max:"date"}{"state":v_ESTADO,"place_type":"state"})
 
