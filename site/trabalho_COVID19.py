@@ -37,7 +37,7 @@ v_DATA_LIBERA = input("Libera analise de Dados S-(Sim)/N-(Não):")
 ## v_DATA_MAXIMA = db_uf.covid19_brasil.find({$max:"date"}{"state":v_ESTADO,"place_type":"state"})
 
 # recepciona valores da consulta para o state
-v_RECEPCIONA = db.covid19_brasil.find({"state":v_ESTADO,"place_type":"state"})
+v_RECEPCIONA = db.covid19_brasil.find({"state":v_ESTADO,"place_type":"state"},no_cursor_timeout=True)
 
 # seta valor padrao de inicializacao da variavel
 v_DATA_MAXIMA = datetime.strptime("1601-01-01",'%Y-%m-%d').date()
@@ -57,7 +57,7 @@ for y in v_RECEPCIONA:
 print("Data maxima {}".format(str(v_DATA_MAXIMA)))
 
 # efetua o filtro pela data mais atual na base
-v_CAMPO_CONFIRMADOS = db.covid19_brasil.find({"date":str(v_DATA_MAXIMA),"state":v_ESTADO,"place_type":"state"})
+v_CAMPO_CONFIRMADOS = db.covid19_brasil.find({"date":str(v_DATA_MAXIMA),"state":v_ESTADO,"place_type":"state"},no_cursor_timeout=True)
 
 v_VALOR = 0
 
@@ -76,10 +76,6 @@ print("Total contabilizado do estado do {} foi: {} ".format(v_ESTADO,v_VALOR))
 # mongoimport --authenticationDatabase=admin -u admin -p admin -d COVID19 -c localidade --type csv --file c:\Temp\Sedes_Coordenadas_Municipios.csv --headerline
 # mongoimport --authenticationDatabase=admin -u admin -p admin -d COVID19 -c localidade --type csv --file c:\Temp\RELATORIO_DTB_BRASIL_MUNICIPIO_tratada_LONG_LAT_FINAL.csv --headerline
 
-v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city"})
-
-v_CONT = 0
-
 ## criação de uma nova collection
 
 nova_col = db["covid19_localidade"]
@@ -92,6 +88,11 @@ if "covid19_localidade" in col_list:
     print("Collection sendo criada!!")
     nova_col = db["covid19_localidade"]
 
+# BLOCO RJ
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"RJ"},no_cursor_timeout=True)
+
+v_CONT = 0
 
 for v_CURSOR in v_RECEPCIONA_2:
     v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
@@ -124,7 +125,1021 @@ for v_CURSOR in v_RECEPCIONA_2:
         ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
         nova_col.insert_one(v_PREPARANDO_INSERT)
 
-print(str(v_CONT))
+print("FIM DO BLOCO RJ: "+str(v_CONT))
+
+# BLOCO SP
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"SP"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO SP: "+str(v_CONT))
+
+# BLOCO MG
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"MG"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO MG: "+str(v_CONT))
+
+# BLOCO AC
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"AC"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO AC: "+str(v_CONT))
+
+# BLOCO AL
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"AL"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO AL: "+str(v_CONT))
+
+# BLOCO AM
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"AM"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO AM: "+str(v_CONT))
+
+# BLOCO AP
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"AP"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO AP: "+str(v_CONT))
+
+# BLOCO BA
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"BA"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO BA: "+str(v_CONT))
+
+# BLOCO CE
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"CE"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO CE: "+str(v_CONT))
+
+# BLOCO DF
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"DF"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO DF: "+str(v_CONT))
+
+# BLOCO ES
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"ES"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO ES: "+str(v_CONT))
+
+# BLOCO GO
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"GO"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO GO: "+str(v_CONT))
+
+# BLOCO MA
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"MA"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO MA: "+str(v_CONT))
+
+# BLOCO MS
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"MS"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO MS: "+str(v_CONT))
+
+# BLOCO MT
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"MT"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO MT: "+str(v_CONT))
+
+# BLOCO PA
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"PA"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO PA: "+str(v_CONT))
+
+# BLOCO PB
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"PB"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO PB: "+str(v_CONT))
+
+# BLOCO PE
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"PE"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO PE: "+str(v_CONT))
+
+# BLOCO PI
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"PI"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO PI: "+str(v_CONT))
+
+# BLOCO PR
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"PR"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO PR: "+str(v_CONT))
+
+# BLOCO RN
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"RN"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO RN: "+str(v_CONT))
+
+# BLOCO RO
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"RO"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO RO: "+str(v_CONT))
+
+# BLOCO RR
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"RR"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO RR: "+str(v_CONT))
+
+# BLOCO RS
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"RS"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO RS: "+str(v_CONT))
+
+# BLOCO SC
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"SC"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO SC: "+str(v_CONT))
+
+# BLOCO SE
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"SE"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO SE: "+str(v_CONT))
+
+# BLOCO TO
+
+v_RECEPCIONA_2 = db.covid19_brasil.find({"place_type":"city","state":"TO"},no_cursor_timeout=True)
+
+v_CONT = 0
+
+for v_CURSOR in v_RECEPCIONA_2:
+    v_LOC = db.localidade.find({"Codigo_Municipio_Completo":v_CURSOR["city_ibge_code"]})
+    for v_CURSOR_2 in v_LOC:
+        v_CONT = v_CONT + 1
+        #v_NOVA_COLECAO = v_CURSOR[""]
+        ##print(v_CURSOR_2["CODIGO_MUNICIPIO"])
+        v_PREPARANDO_INSERT = {
+                                "id_controle" : v_CURSOR["_id"],
+                                "epidemiological_week" : v_CURSOR["epidemiological_week"],
+                                "date" : v_CURSOR["date"],
+                                "order_for_place" : v_CURSOR["order_for_place"],
+                                "state" : v_CURSOR["state"],
+                                "city" : v_CURSOR["city"],
+                                "city_ibge_code" : v_CURSOR["city_ibge_code"],
+                                "place_type" : v_CURSOR["place_type"],
+                                "last_available_confirmed" : v_CURSOR["last_available_confirmed"],
+                                "last_available_confirmed_per_100k_inhabitants" : v_CURSOR["last_available_confirmed_per_100k_inhabitants"],
+                                "new_confirmed" : v_CURSOR["new_confirmed"],
+                                "last_available_deaths" : v_CURSOR["last_available_deaths"],
+                                "new_deaths" : v_CURSOR["new_deaths"],
+                                "last_available_death_rate" : v_CURSOR["last_available_death_rate"],
+                                "estimated_population_2019" : v_CURSOR["estimated_population_2019"],
+                                "is_last" : v_CURSOR["is_last"],
+                                "is_repeated" : v_CURSOR["is_repeated"],
+                                "longitude":v_CURSOR_2["LONGITUDE"],
+                                "latitude":v_CURSOR_2["LATITUDE"]
+                            }
+        ## v_INSERT_RESULT = {"longitude":v_CURSOR_2["LONGITUDE"],"latitude":v_CURSOR_2["LATITUDE"]}
+        ## v_QUEM = {"$set":{"_id":v_CURSOR["_id"]}}
+        nova_col.insert_one(v_PREPARANDO_INSERT)
+
+print("FIM DO BLOCO TO: "+str(v_CONT))
 
 ##covid19 - indice de transmissao por estado e cidade:
 ## 1% significa alarmante
@@ -719,7 +1734,8 @@ for v_CURSOR_5 in v_RECEPCIONA_4:
                                     }
             nova_col_TO.insert_one(v_PREPARANDO_INSERT_ESTADOS)
 
-""" bloco RJ """
+#bloco RJ 
+
 v_UF_VALOR = db.covid19_estado_RJ.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -798,7 +1814,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco AC """
+#bloco AC 
+
 v_UF_VALOR = db.covid19_estado_AC.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -877,7 +1894,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco AL """
+#bloco AL
+
 v_UF_VALOR = db.covid19_estado_AL.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -956,7 +1974,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco AM """
+#bloco AM
+
 v_UF_VALOR = db.covid19_estado_AM.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1023,7 +2042,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco AP """
+#bloco AP
+
 v_UF_VALOR = db.covid19_estado_AP.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1090,7 +2110,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco BA """
+#bloco BA 
+
 v_UF_VALOR = db.covid19_estado_BA.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1157,7 +2178,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco CE """
+#bloco CE
+
 v_UF_VALOR = db.covid19_estado_CE.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1224,7 +2246,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco DF """
+#bloco DF
+
 v_UF_VALOR = db.covid19_estado_DF.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1291,7 +2314,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco ES """
+#bloco ES
+
 v_UF_VALOR = db.covid19_estado_ES.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1358,7 +2382,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco GO """
+#bloco GO
+
 v_UF_VALOR = db.covid19_estado_GO.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1425,7 +2450,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco MA """
+#bloco MA
+
 v_UF_VALOR = db.covid19_estado_MA.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1492,7 +2518,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco MG """
+#bloco MG
+
 v_UF_VALOR = db.covid19_estado_MG.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1559,7 +2586,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco MS """
+#bloco MS
+
 v_UF_VALOR = db.covid19_estado_MS.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1626,7 +2654,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco MT """
+#bloco MT
+
 v_UF_VALOR = db.covid19_estado_MT.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1693,7 +2722,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco PA """
+#bloco PA
+
 v_UF_VALOR = db.covid19_estado_PA.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1760,7 +2790,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco PB """
+#bloco PB
+
 v_UF_VALOR = db.covid19_estado_PB.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1827,7 +2858,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco PE """
+#bloco PE
+
 v_UF_VALOR = db.covid19_estado_PE.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1894,7 +2926,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco PI """
+#bloco PI
+
 v_UF_VALOR = db.covid19_estado_PI.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -1961,7 +2994,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco PR """
+#bloco PR
+
 v_UF_VALOR = db.covid19_estado_PR.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2028,7 +3062,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco RN """
+#bloco RN
+
 v_UF_VALOR = db.covid19_estado_RN.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2095,7 +3130,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco RO """
+#bloco RO
+
 v_UF_VALOR = db.covid19_estado_RO.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2162,7 +3198,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco RR """
+#bloco RR
+
 v_UF_VALOR = db.covid19_estado_RR.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2229,7 +3266,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco RS """
+#bloco RS
+
 v_UF_VALOR = db.covid19_estado_RS.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2296,7 +3334,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco SC """
+#bloco SC
+
 v_UF_VALOR = db.covid19_estado_SC.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2363,7 +3402,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco SE """
+#bloco SE
+
 v_UF_VALOR = db.covid19_estado_SE.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2430,7 +3470,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco SP """
+#bloco SP
+
 v_UF_VALOR = db.covid19_estado_SP.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2497,7 +3538,8 @@ v_PREPARANDO_INSERT_UF = {
                             }
 nova_col_2.insert_one(v_PREPARANDO_INSERT_UF)
 
-""" bloco TO """
+#bloco TO
+
 v_UF_VALOR = db.covid19_estado_TO.find({}).sort("date",1)
 
 v_DATA_TEMP = "1600-01-01"
@@ -2646,14 +3688,14 @@ if "covid19_estado" in col_list:
     print("Collection sendo criada - covid19_estado!!")
     nova_col_est = db["covid19_estado"]
 
-if "covid19_mun" in col_list:
-    print("Collection já existe, dropando - covid19_mun!!")
+if "covid19_municipio" in col_list:
+    print("Collection já existe, dropando - covid19_municipio!!")
     db.covid19_municipio.drop()
-    print("Collection sendo criada - covid19_geral_mun!!")
+    print("Collection sendo criada - covid19 municipio!!")
     nova_col_mun = db["covid19_municipio"]
 
 v_INDICE_MES = db.covid19_geral_estado.find({})
-v_INDICE_MUN = db.covid19_geral_municipio.find({})
+
 
 for v_IND_MES in v_INDICE_MES:
     v_VAL_IND = db.covid19_geral_pais.find({"date":v_IND_MES["date"]})
@@ -2699,6 +3741,74 @@ for v_IND_MES in v_INDICE_MES:
 
                             }
         nova_col_est.insert_one(v_PREPARANDO_INSERT)
+
+
+""" Foi modificado para fazer por blocos de UF"""
+#Bloco RJ
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"RJ"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    #print(str(v_IND_MUN["date"])+str(v_IND_MUN["state"]))
+    #print(str(v_IND_MUN))
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        #print(str(v_IND_MUN_EST))
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO RJ")
+
+#Bloco SP
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"SP"})
 
 v_CONF_ANT = 0
 v_CONF = 0
@@ -2755,6 +3865,1509 @@ for v_IND_MUN in v_INDICE_MUN:
                             }
         nova_col_mun.insert_one(v_PREPARANDO_INSERT)
 
+print("Final do BLOCO SP")
+
+#Bloco MG
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"MG"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO MG")
+
+#Bloco AC
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"AC"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO AC")
+
+#Bloco AL
+
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"AL"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO AL")
+
+#Bloco AM
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"AM"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO AM")
+
+#Bloco AP
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"AP"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO AP")
+
+#Bloco BA
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"BA"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO BA")
+
+#Bloco CE
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"CE"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO CE")
+
+#Bloco DF
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"DF"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO DF")
+
+#Bloco ES
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"ES"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO ES")
+
+#Bloco GO
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"GO"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO GO")
+
+#Bloco MA
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"MA"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO MA")
+
+#Bloco MS
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"MS"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO MS")
+
+#Bloco MT
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"MT"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO MT")
+
+#Bloco PA
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"PA"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO PA")
+
+#Bloco PB
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"PB"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO PB")
+
+#Bloco PE
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"PE"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO PE")
+
+#Bloco PI
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"PI"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO PI")
+
+#Bloco PR
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"PR"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO PR")
+
+#Bloco RN
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"RN"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO RN")
+
+#Bloco RO
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"RO"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO RO")
+
+#Bloco RR
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"RR"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO RR")
+
+#Bloco RS
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"RS"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO RS")
+
+#Bloco SC
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"SC"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO SC")
+
+#Bloco SE
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"SE"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO SE")
+
+#Bloco TO
+v_INDICE_MUN = db.covid19_geral_municipio.find({"state":"TO"})
+
+v_CONF_ANT = 0
+v_CONF = 0
+v_MORTE_ANT = 0
+v_MORTE = 0
+v_CONFIRMADOS_ANT = 0
+v_CONFIRMADOS = 0
+v_MORTOS_ANT = 0
+v_MORTOS = 0
+
+for v_IND_MUN in v_INDICE_MUN:
+    v_VAL_IND = db.covid19_estado.find({"date":v_IND_MUN["date"],"state":v_IND_MUN["state"]})
+    for v_IND_MUN_EST in v_VAL_IND:
+        v_SEMANA = v_IND_MUN["epidemiological_week"]
+        v_DATA = v_IND_MUN["date"]
+        if v_IND_MUN_EST["last_available_confirmed"]==0: 
+            v_CONF_ANT = 1 
+        else: 
+            v_CONF_ANT = v_IND_MUN_EST["last_available_confirmed"]
+        if v_IND_MUN_EST["new_confirmed"]==0: 
+            v_CONF = 1 
+        else:
+            v_CONF = v_IND_MUN_EST["new_confirmed"]
+        if v_IND_MUN_EST["last_available_deaths"]==0:
+            v_MORTE_ANT = 1 
+        else: 
+            v_MORTE_ANT = v_IND_MUN_EST["last_available_deaths"]
+        if v_IND_MUN_EST["new_deaths"]==0: 
+            v_MORTE = 1 
+        else: 
+            v_MORTE = v_IND_MUN_EST["new_deaths"]
+        v_CONFIRMADOS_ANT = (v_IND_MUN["last_available_confirmed"]*100)/v_CONF_ANT
+        v_CONFIRMADOS = (v_IND_MUN["new_confirmed"]*100)/v_CONF
+        v_MORTOS_ANT = (v_IND_MUN["last_available_deaths"]*100)/v_MORTE_ANT
+        v_MORTOS = (v_IND_MUN["new_deaths"]*100)/v_MORTE
+        v_PREPARANDO_INSERT = {
+                                "epidemiological_week" : v_SEMANA,
+                                "date" : v_DATA,
+                                "state" : v_IND_MUN["state"],
+                                "city" : v_IND_MUN["city"],
+                                "last_available_confirmed" : v_IND_MUN["last_available_confirmed"],
+                                "confirmados_uf" : v_IND_MUN_EST["last_available_confirmed"],
+                                "indice_confirmado_anterior" : v_CONFIRMADOS_ANT,
+                                "new_confirmed" : v_IND_MUN["new_confirmed"],
+                                "confirmados_novo_uf" : v_IND_MUN_EST["new_confirmed"],
+                                "indice_novo_confirmado" : v_CONFIRMADOS,
+                                "last_available_deaths" : v_IND_MUN["last_available_deaths"], 
+                                "mortos_uf" : v_IND_MUN_EST["last_available_deaths"],
+                                "indice_mortes_anterior" : v_MORTOS_ANT,
+                                "new_deaths" : v_IND_MUN["new_deaths"],
+                                "mortos_novo_uf" : v_IND_MUN_EST["new_deaths"],
+                                "indice_mortes_novas" : v_MORTOS
+
+                            }
+        nova_col_mun.insert_one(v_PREPARANDO_INSERT)
+
+print("Final do BLOCO TO")
+
 """v_RECEPCIONA_5 = sorted(v_REP_1, key=itemgetter(3,4))
         for v_CURSOR_6 in v_RECEPCIONA_5:
             v_STATE = v_CURSOR_6["state"]
@@ -2788,6 +5401,7 @@ for v_IND_MUN in v_INDICE_MUN:
                 v_DATA_WEEK_ANT = v_CURSOR_6["date"]
                 v_STATE_ANT = v_CURSOR_6["state"]
 """
+print("Inicio da Escrita no Arquivo")
 
 # exemplo de ordenar: 
 # db.getCollection('faculdades').find({},{"sigla":1,"cidade":1}).sort({"cidade":1})
@@ -2849,4 +5463,4 @@ for v_CURSOR_3 in v_EXTRACAO:
 
 file.close()
 
-
+print("Termino do Programa!!!")
